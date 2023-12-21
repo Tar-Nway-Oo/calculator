@@ -68,6 +68,15 @@ function evaluate({previousOperand, currentOperand, operator}) {
     return evaluation.toString();
 }
 
+const INTEGER_FORMATTER = new Intl.NumberFormat("en-us", {maximumFractionDigits: 0});
+
+function formatOperand(operand) {
+  if (operand == null) return;
+  const [integer, decimal] = operand.split(".");
+  if (decimal == null) return INTEGER_FORMATTER.format(integer);
+  return `${INTEGER_FORMATTER.format(integer)}.${decimal}`;
+}
+
 
 export default function App() {
 
@@ -76,8 +85,8 @@ export default function App() {
   return(
     <div className='container'>
       <div className="output">
-         <p>{previousOperand} {operator}</p>
-         <p id='current'>{currentOperand}</p>
+         <p>{formatOperand(previousOperand)} {operator}</p>
+         <p id='current'>{formatOperand(currentOperand)}</p>
       </div>
       <div className="btn-group">
       <button className="btn span-2" onClick={() => {dispatch({type: ACTIONS.CLEAR_ALL})}}>AC</button>
